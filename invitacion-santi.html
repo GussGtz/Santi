@@ -214,6 +214,37 @@
   .boton-principal:hover { box-shadow: 0 8px 0 var(--tinta); }
   .boton:focus-visible { outline: 3px solid var(--oro); outline-offset: 3px; }
 
+  /* ───── Foto ───── */
+  .cromo {
+    width: min(100% - 32px, 21rem);
+    margin: clamp(2.5rem, 9vw, 4rem) auto 0;
+    padding: clamp(8px, 2.4vw, 12px);
+    padding-bottom: 0;
+    background: var(--cal);
+    box-shadow: 0 8px 0 var(--tinta);
+    transform: rotate(-2deg);
+  }
+  .cromo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 22%;
+  }
+  .cromo figcaption {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: .5em;
+    padding: .3em 0 .35em;
+    font-family: var(--f-nombre);
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    line-height: 1;
+    color: var(--tinta);
+  }
+  .cromo figcaption span { color: var(--pasto); }
+
   /* ───── Marcador ───── */
   .bloque { padding-block: clamp(2.5rem, 9vw, 4.5rem) 0; }
 
@@ -682,6 +713,11 @@
       </div>
     </div>
   </header>
+
+  <figure class="cromo">
+    <img src="santi.jpg" width="900" height="1200" alt="Santi sonriendo con su uniforme de fútbol amarillo y verde">
+    <figcaption>Santi <span>8</span></figcaption>
+  </figure>
 
   <div class="jugada" aria-hidden="true">
     <svg viewBox="0 0 640 250" role="presentation">
