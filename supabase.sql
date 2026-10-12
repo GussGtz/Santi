@@ -3,13 +3,13 @@
 -- Sirve tanto si la tabla ya existe como si no: solo agrega lo que falte.
 
 create table if not exists public."Santi" (
-  id bigint generated always as identity primary key
+  id         bigint generated always as identity primary key,
+  created_at timestamptz not null default now()
 );
 
 alter table public."Santi" add column if not exists nombre_completo text;
 alter table public."Santi" add column if not exists dispositivo_id  uuid;
 alter table public."Santi" add column if not exists dispositivo     text;
-alter table public."Santi" add column if not exists creado_en       timestamptz not null default now();
 
 -- Una sola confirmación por dispositivo.
 create unique index if not exists santi_dispositivo_unico on public."Santi" (dispositivo_id);
@@ -29,3 +29,6 @@ create policy "invitados pueden confirmar"
   );
 
 grant insert on public."Santi" to anon;
+
+-- Avisa a la API que la tabla cambió.
+notify pgrst, 'reload schema';
