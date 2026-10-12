@@ -226,7 +226,18 @@
 
   (function () {
     var el = function (id) { return document.getElementById(id); };
-    var clave = null;   // solo en memoria: al cerrar o recargar la pestaña hay que volver a entrar
+    // Código de sesión al azar que entrega Supabase al entrar. Se guarda en este navegador
+    // y la sesión sigue abierta hasta pulsar "Salir". La contraseña nunca se guarda.
+    var CLAVE_SESION = 'santi-admin-sesion';
+    var sesion = null;
+    try { sesion = localStorage.getItem(CLAVE_SESION); } catch (e) {}
+    function guardarSesion(token) {
+      sesion = token;
+      try {
+        if (token) localStorage.setItem(CLAVE_SESION, token);
+        else localStorage.removeItem(CLAVE_SESION);
+      } catch (e) {}
+    }
 
     function rpc(nombre, datos) {
       return fetch(SUPABASE_URL + '/rest/v1/rpc/' + nombre, {
@@ -292,7 +303,7 @@
     var hora = new Intl.DateTimeFormat('es-MX', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
 
     function cargarLista() {
-      return rpc('admin_confirmados', { clave: clave }).then(function (filas) {
+      return rpc('admin_lista', { token: sesion }).then(function (filas) {
         el('error-lista').hidden = true;
         pintar(filas || []);
         el('estado').textContent = 'Se actualiza sola cada 10 segundos. Última vez: ' + hora.format(new Date());
@@ -300,21 +311,32 @@
       });
     }
 
-    function salir() {
-      clave = null;
+    function cerrar() {
+      guardarSesion(null);
       el('lista').textContent = '';
       mostrar('form-entrar');
+    }
+    function salir() {
+      var token = sesion;
+      cerrar();
+      if (token) rpc('admin_salir', { token: token }).catch(function () {});
+    }
+    function entrar(clave) {
+      return rpc('admin_entrar', { clave: clave }).then(function (token) {
+        guardarSesion(token);
+        return cargarLista();
+      });
     }
 
     // Actualización automática mientras la lista está abierta y la pestaña a la vista.
     var cargando = false;
     function refrescar() {
-      if (!clave || cargando || document.hidden || el('vista').hidden) return;
+      if (!sesion || cargando || document.hidden || el('vista').hidden) return;
       cargando = true;
       cargarLista().catch(function (e) {
-        if (e.codigo === '28P01') {
-          salir();
-          avisar('error-entrar', 'La contraseña cambió. Vuelve a entrar.');
+        if (e.codigo === '28000') {
+          cerrar();
+          avisar('error-entrar', 'La sesión se cerró. Vuelve a entrar.');
           return;
         }
         avisar('error-lista', 'Sin conexión. Se volverá a intentar en unos segundos.');
@@ -333,11 +355,9 @@
       if (!valor) { avisar('error-entrar', 'Escribe la contraseña.'); return; }
       el('error-entrar').hidden = true;
       el('boton-entrar').disabled = true;
-      clave = valor;
-      cargarLista().then(function () {
+      entrar(valor).then(function () {
         el('clave').value = '';
       }).catch(function (e) {
-        clave = null;
         avisar('error-entrar', mensajeDeError(e));
       }).then(function () { el('boton-entrar').disabled = false; });
     });
@@ -355,9 +375,8 @@
           avisar('error-entrar', 'Ya existía una contraseña. Entra con ella.');
           return;
         }
-        clave = a;
         el('clave-nueva').value = el('clave-repetir').value = '';
-        return cargarLista();
+        return entrar(a);
       }).catch(function () {
         avisar('error-crear', 'No se pudo guardar. Inténtalo de nuevo.');
       }).then(function () { el('boton-crear').disabled = false; });
@@ -372,11 +391,22 @@
 
     el('boton-salir').addEventListener('click', salir);
 
-    rpc('admin_tiene_clave').then(function (tiene) {
-      mostrar(tiene ? 'form-entrar' : 'form-crear');
-    }).catch(function () {
-      el('cargando').textContent = 'No se pudo conectar con la base de datos. Recarga la página.';
-    });
+    function inicio() {
+      rpc('admin_tiene_clave').then(function (tiene) {
+        mostrar(tiene ? 'form-entrar' : 'form-crear');
+      }).catch(function () {
+        el('cargando').textContent = 'No se pudo conectar con la base de datos. Recarga la página.';
+      });
+    }
+    if (sesion) {
+      // Sesión guardada: entra directo. Solo se descarta si Supabase dice que ya no es válida.
+      cargarLista().catch(function (e) {
+        if (e.codigo === '28000') { guardarSesion(null); inicio(); return; }
+        el('cargando').textContent = 'No se pudo conectar con la base de datos. Recarga la página.';
+      });
+    } else {
+      inicio();
+    }
   })();
 </script>
 </body>
