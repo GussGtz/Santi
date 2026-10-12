@@ -311,6 +311,16 @@
     .fila { grid-template-columns: 1fr; }
   }
 
+  .mapa {
+    margin-top: 1.25rem;
+    aspect-ratio: 4 / 3;
+    max-height: 26rem;
+    width: 100%;
+    background: var(--tinta);
+    border: 3px solid var(--cal);
+  }
+  .mapa iframe { display: block; width: 100%; height: 100%; border: 0; }
+
   /* ───── Confirmación ───── */
   .confirmar {
     display: grid;
@@ -532,7 +542,11 @@
           </div>
         </dl>
       </div>
+      <div class="mapa">
+        <iframe title="Mapa de Google con la ubicación del Salón de Fiestas Mar" src="https://maps.google.com/maps?q=Salon%20de%20fiestas%20MAR%2C%20C.%2098%20Supermanzana%20227%2C%2077516%20Canc%C3%BAn%2C%20Q.R.&amp;ll=21.190304,-86.850288&amp;z=17&amp;hl=es&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
       <div class="acciones">
+        <a class="boton" href="https://maps.app.goo.gl/sZq9G5uDEGVFnnwk9?g_st=ic" target="_blank" rel="noopener">Abrir en Google Maps</a>
         <a class="boton" href="https://maps.app.goo.gl/xCX2FaFgsVg5RuxK7?g_st=ic" target="_blank" rel="noopener">Cómo llegar</a>
         <a class="boton" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Cumple%208%20de%20Santi&amp;dates=20261016T200000Z%2F20261016T230000Z&amp;details=No%20olvides%20traer%20tu%20traje%20de%20ba%C3%B1o.&amp;location=Sal%C3%B3n%20de%20Fiestas%20Mar%2C%20C.%2098%2C%20Supermanzana%20227%2C%2077516%20Canc%C3%BAn%2C%20Q.R." target="_blank" rel="noopener">Agregar al calendario</a>
       </div>
