@@ -2,10 +2,17 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-</head>
-<body>
-<meta charset="utf-8">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<meta name="description" content="Te invito a celebrar el cumple 8 de Santi: viernes 16 de octubre, 3:00 PM, Salón de Fiestas Mar.">
+<meta name="theme-color" content="#1f4f35">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icono.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icono-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cumple Santi">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cumple 8 de Santi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -469,6 +476,8 @@
     .boton { transition: none; }
   }
 </style>
+</head>
+<body>
 
 <div class="cancha">
 
@@ -775,6 +784,13 @@
       });
     });
   })();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () {});
+    });
+  }
 </script>
 </body>
 </html>

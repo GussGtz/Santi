@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
+<defs><clipPath id="e"><circle r="60"/></clipPath></defs>
+<rect width="512" height="512" fill="#1f4f35"/>
+<g fill="#2f7a4f">
+<path d="M256 560 L-40 -40 L80 -40 Z"/><path d="M256 560 L200 -40 L312 -40 Z"/><path d="M256 560 L432 -40 L552 -40 Z"/>
+<path d="M256 560 L-60 200 L-60 330 Z"/><path d="M256 560 L572 200 L572 330 Z"/>
+</g>
+<g transform="translate(256 256) rotate(-14) scale(3.1)">
+<circle r="67" fill="#f0b43c"/>
+<circle r="60" fill="#1d1d1b"/>
+<g clip-path="url(#e)">
+<circle r="55" fill="#fbfdf9"/>
+<path d="M0 -22 L20.9 -6.8 L12.9 17.8 L-12.9 17.8 L-20.9 -6.8 Z" fill="#1d1d1b"/>
+<g id="g" stroke="#1d1d1b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M0 -22 V-40" fill="none"/><path d="M0 -40 L14 -49 L11 -64 H-11 L-14 -49 Z" fill="#1d1d1b"/><path d="M14 -49 L43.2 -28.8" fill="none"/>
+</g>
+<use xlink:href="#g" transform="rotate(72)"/><use xlink:href="#g" transform="rotate(144)"/><use xlink:href="#g" transform="rotate(216)"/><use xlink:href="#g" transform="rotate(288)"/>
+</g></g></svg>

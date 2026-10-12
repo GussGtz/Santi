@@ -11,3 +11,7 @@ Para activar las confirmaciones, ejecuta `supabase.sql` en el SQL Editor de Supa
 ## Lista de confirmados
 
 `admin.html` muestra quién ha confirmado. Pide una contraseña, que se crea la primera vez que se abre la página. `supabase-admin.sql` contiene las funciones que la protegen.
+
+## App instalable (PWA)
+
+`manifest.webmanifest`, `sw.js` y la carpeta `icons/` permiten instalar la invitación en el teléfono y abrirla sin conexión. Si cambias `index.html`, sube el número de `VERSION` en `sw.js`.
