@@ -566,19 +566,9 @@
       width: calc((100vw - 52rem) / 2 - 1rem);
       pointer-events: none;
     }
-    .banda-izq { left: 0; }
     .banda-der { right: 0; }
-    .banda .corredor { position: absolute; left: 6%; width: 5.5rem; animation: vaiven 9s linear infinite; }
-    .banda .voltea { transform-origin: 9px 0; animation: voltea 9s step-end infinite; }
-    .banda .v1 { top: 38%; }
-    .banda .v2 { top: 68%; animation-duration: 12s; animation-delay: -4s; }
-    .banda .v2 .voltea { animation-duration: 12s; animation-delay: -4s; }
-    .banda .v3 { top: 30%; animation-duration: 10s; animation-delay: -2s; }
-    .banda .v3 .voltea { animation-duration: 10s; animation-delay: -2s; }
     .penal { position: absolute; left: 8%; right: 8%; bottom: 7%; width: 84%; height: auto; overflow: visible; }
   }
-  @keyframes vaiven { 0%, 100% { left: 6%; } 50% { left: calc(94% - 5.5rem); } }
-  @keyframes voltea { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
   .m-balon { transform: translate(130px, -60px) scale(.6); animation: m-balon 3.4s ease-out infinite; }
   .m-red { transform-origin: 130px 150px; animation: m-red 3.4s linear infinite; }
   @keyframes m-balon {
@@ -597,7 +587,7 @@
   @media (prefers-reduced-motion: reduce) {
     .jug .pierna, .jug .brazo, .jug-cuerpo, .rueda,
     .j-corre, .j-balon, .j-portero, .j-red, .j-gol,
-    .carrera .corredor, .banda .corredor, .banda .voltea, .m-balon, .m-red { animation: none; }
+    .carrera .corredor, .m-balon, .m-red { animation: none; }
     .carrera .c1 { transform: translateX(12vw); }
     .carrera .c2 { transform: translateX(34vw); }
     .carrera .c3 { transform: translateX(56vw); }
@@ -612,36 +602,7 @@
 </head>
 <body>
 
-<div class="banda banda-izq" aria-hidden="true">
-  <svg class="corredor v1" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo">
-<path class="pierna" style="animation-delay:-0.24s" d="M0 -26 L6 -13 L-2 -1"/>
-<path class="brazo" d="M1 -44 L-5 -35 L1 -28"/>
-<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
-<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#1d1d1b" stroke="#1d1d1b" stroke-width="1.5"/>
-<path class="pierna" d="M0 -26 L6 -13 L-2 -1"/>
-<path class="brazo" style="animation-delay:-0.24s" d="M1 -44 L-5 -35 L1 -28"/>
-<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
-</g></g><g transform="translate(20 -7)"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g></svg>
-  <svg class="corredor v2" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.2s">
-<path class="pierna" style="animation-delay:-0.44s" d="M0 -26 L6 -13 L-2 -1"/>
-<path class="brazo" style="animation-delay:-0.2s" d="M1 -44 L-5 -35 L1 -28"/>
-<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
-<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
-<path class="pierna" style="animation-delay:-0.2s" d="M0 -26 L6 -13 L-2 -1"/>
-<path class="brazo" style="animation-delay:-0.44s" d="M1 -44 L-5 -35 L1 -28"/>
-<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
-</g></g></g></svg>
-</div>
 <div class="banda banda-der" aria-hidden="true">
-  <svg class="corredor v3" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.1s">
-<path class="pierna" style="animation-delay:-0.34s" d="M0 -26 L6 -13 L-2 -1"/>
-<path class="brazo" style="animation-delay:-0.1s" d="M1 -44 L-5 -35 L1 -28"/>
-<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
-<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
-<path class="pierna" style="animation-delay:-0.1s" d="M0 -26 L6 -13 L-2 -1"/>
-<path class="brazo" style="animation-delay:-0.34s" d="M1 -44 L-5 -35 L1 -28"/>
-<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
-</g></g><g transform="translate(20 -7)"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g></svg>
   <svg class="penal" viewBox="0 0 220 180" role="presentation">
       <path d="M0 150 H220" stroke="#fbfdf9" stroke-width="3"/>
       <g class="m-red">
