@@ -471,6 +471,139 @@
     color: var(--oro);
   }
 
+  /* ───── Animaciones: jugada de gol, jugadores corriendo y bandas laterales ───── */
+  .cancha { position: relative; z-index: 1; }
+
+  .jug .pierna, .jug .brazo { fill: none; stroke: var(--cal); stroke-linecap: round; stroke-linejoin: round; }
+  .jug .pierna { stroke-width: 5.5; transform-origin: 0px -26px; animation: zancada .48s ease-in-out infinite; }
+  .jug .brazo { stroke-width: 4.5; transform-origin: 1px -44px; animation: braceo .48s ease-in-out infinite; }
+  .jug-cuerpo { animation: bote .24s ease-in-out infinite alternate; }
+  .rueda { animation: rueda .5s linear infinite; }
+  @keyframes zancada { 0%, 100% { transform: rotate(42deg); } 50% { transform: rotate(-44deg); } }
+  @keyframes braceo { 0%, 100% { transform: rotate(-38deg); } 50% { transform: rotate(40deg); } }
+  @keyframes bote { from { transform: translateY(0); } to { transform: translateY(-2.5px); } }
+  @keyframes rueda { to { transform: rotate(360deg); } }
+
+  .jugada {
+    max-width: 42rem;
+    margin-inline: auto;
+    margin-top: clamp(1.5rem, 6vw, 3rem);
+    padding-inline: 16px;
+  }
+  .jugada svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .j-corre { transform: translateX(300px); animation: j-corre 6s linear infinite; }
+  .j-balon { transform: translate(592px, 0); animation: j-balon 6s linear infinite; }
+  .j-portero { transform-origin: 0 0; animation: j-portero 6s ease-in-out infinite; }
+  .j-red { transform-origin: 545px 215px; animation: j-red 6s linear infinite; }
+  .j-gol {
+    font-family: var(--f-nombre);
+    font-size: 68px;
+    fill: var(--oro);
+    stroke: var(--tinta);
+    stroke-width: 2.5px;
+    paint-order: stroke;
+    transform-origin: 235px 68px;
+    transform: rotate(-4deg);
+    animation: j-gol 6s ease-out infinite;
+  }
+  @keyframes j-corre {
+    0% { transform: translateX(-60px); opacity: 1; }
+    44% { transform: translateX(285px); }
+    50%, 90% { transform: translateX(300px); opacity: 1; }
+    97%, 100% { transform: translateX(300px); opacity: 0; }
+  }
+  @keyframes j-balon {
+    0% { transform: translate(-15px, 0); opacity: 1; }
+    44% { transform: translate(330px, 0); }
+    47% { transform: translate(350px, 0); }
+    58% { transform: translate(592px, -82px); }
+    62% { transform: translate(580px, -66px); }
+    72%, 90% { transform: translate(592px, 0); opacity: 1; }
+    97%, 100% { transform: translate(592px, 0); opacity: 0; }
+  }
+  @keyframes j-portero {
+    0%, 50% { transform: none; }
+    57% { transform: translate(18px, -14px) rotate(28deg); }
+    66%, 90% { transform: translate(26px, -3px) rotate(82deg); }
+    97%, 100% { transform: none; }
+  }
+  @keyframes j-red {
+    0%, 57%, 68%, 100% { transform: none; }
+    60% { transform: skewX(7deg); }
+    63% { transform: skewX(-4deg); }
+    65% { transform: skewX(2deg); }
+  }
+  @keyframes j-gol {
+    0%, 58% { transform: scale(0) rotate(-4deg); opacity: 0; }
+    63% { transform: scale(1.2) rotate(-4deg); opacity: 1; }
+    67%, 88% { transform: scale(1) rotate(-4deg); opacity: 1; }
+    95%, 100% { transform: scale(1) rotate(-4deg); opacity: 0; }
+  }
+
+  .carrera {
+    position: relative;
+    height: 5.25rem;
+    margin-top: clamp(2rem, 7vw, 3.5rem);
+    overflow: hidden;
+    border-bottom: 3px solid var(--cal);
+  }
+  .corredor { display: block; width: 3.4rem; height: auto; overflow: visible; }
+  .carrera .corredor { position: absolute; left: 0; bottom: 0; animation: cruza 7s linear infinite; }
+  .carrera .c2 { animation-delay: -.7s; }
+  .carrera .c3 { animation-delay: -1.3s; }
+  .carrera .c4 { animation-delay: -2.1s; }
+  @keyframes cruza { from { transform: translateX(-5rem); } to { transform: translateX(100vw); } }
+
+  /* En pantallas anchas, los costados de la invitación son las bandas de la cancha. */
+  .banda { display: none; }
+  @media (min-width: 80rem) {
+    .banda {
+      display: block;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 0;
+      width: calc((100vw - 52rem) / 2 - 1rem);
+      pointer-events: none;
+    }
+    .banda-izq { left: 0; }
+    .banda-der { right: 0; }
+    .banda .corredor { position: absolute; left: 6%; width: 5.5rem; animation: vaiven 9s linear infinite; }
+    .banda .voltea { transform-origin: 9px 0; animation: voltea 9s step-end infinite; }
+    .banda .v1 { top: 38%; }
+    .banda .v2 { top: 68%; animation-duration: 12s; animation-delay: -4s; }
+    .banda .v2 .voltea { animation-duration: 12s; animation-delay: -4s; }
+    .banda .v3 { top: 30%; animation-duration: 10s; animation-delay: -2s; }
+    .banda .v3 .voltea { animation-duration: 10s; animation-delay: -2s; }
+    .penal { position: absolute; left: 8%; right: 8%; bottom: 7%; width: 84%; height: auto; overflow: visible; }
+  }
+  @keyframes vaiven { 0%, 100% { left: 6%; } 50% { left: calc(94% - 5.5rem); } }
+  @keyframes voltea { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
+  .m-balon { transform: translate(130px, -60px) scale(.6); animation: m-balon 3.4s ease-out infinite; }
+  .m-red { transform-origin: 130px 150px; animation: m-red 3.4s linear infinite; }
+  @keyframes m-balon {
+    0%, 12% { transform: translate(0, 0) scale(1); opacity: 1; }
+    42% { transform: translate(138px, -78px) scale(.55); }
+    48% { transform: translate(132px, -66px) scale(.55); }
+    62%, 86% { transform: translate(134px, -2px) scale(.55); opacity: 1; }
+    94%, 100% { transform: translate(134px, -2px) scale(.55); opacity: 0; }
+  }
+  @keyframes m-red {
+    0%, 41%, 54%, 100% { transform: none; }
+    44% { transform: scaleY(1.05) skewX(-4deg); }
+    48% { transform: skewX(3deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .jug .pierna, .jug .brazo, .jug-cuerpo, .rueda,
+    .j-corre, .j-balon, .j-portero, .j-red, .j-gol,
+    .carrera .corredor, .banda .corredor, .banda .voltea, .m-balon, .m-red { animation: none; }
+    .carrera .c1 { transform: translateX(12vw); }
+    .carrera .c2 { transform: translateX(34vw); }
+    .carrera .c3 { transform: translateX(56vw); }
+    .carrera .c4 { transform: translateX(78vw); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .balon, .rafaga { animation: none; }
     .boton { transition: none; }
@@ -479,6 +612,45 @@
 </head>
 <body>
 
+<div class="banda banda-izq" aria-hidden="true">
+  <svg class="corredor v1" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo">
+<path class="pierna" style="animation-delay:-0.24s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#1d1d1b" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.24s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g><g transform="translate(20 -7)"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g></svg>
+  <svg class="corredor v2" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.2s">
+<path class="pierna" style="animation-delay:-0.44s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.2s" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" style="animation-delay:-0.2s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.44s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g></g></svg>
+</div>
+<div class="banda banda-der" aria-hidden="true">
+  <svg class="corredor v3" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.1s">
+<path class="pierna" style="animation-delay:-0.34s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.1s" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" style="animation-delay:-0.1s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.34s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g><g transform="translate(20 -7)"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g></svg>
+  <svg class="penal" viewBox="0 0 220 180" role="presentation">
+      <path d="M0 150 H220" stroke="#fbfdf9" stroke-width="3"/>
+      <g class="m-red">
+        <path d="M72 40 V150 M84 40 V150 M96 40 V150 M108 40 V150 M120 40 V150 M132 40 V150 M144 40 V150 M156 40 V150 M168 40 V150 M180 40 V150 M192 40 V150 M60 52 H200 M60 64 H200 M60 76 H200 M60 88 H200 M60 100 H200 M60 112 H200 M60 124 H200 M60 136 H200 M60 148 H200" fill="none" stroke="#fbfdf9" stroke-width="1.2" opacity=".55"/>
+        <path d="M60 150 V40 H200 V150" fill="none" stroke="#fbfdf9" stroke-width="6" stroke-linejoin="round"/>
+      </g>
+      <g transform="translate(14 143)"><g class="m-balon"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g>
+    </svg>
+</div>
 <div class="cancha">
 
   <header class="portada">
@@ -566,6 +738,37 @@
     </div>
   </header>
 
+  <div class="jugada" aria-hidden="true">
+    <svg viewBox="0 0 640 250" role="presentation">
+      <rect x="0" y="215" width="640" height="35" fill="#153a27" opacity=".7"/>
+      <path d="M0 215 H640" stroke="#fbfdf9" stroke-width="4"/>
+      <g class="j-red">
+        <path d="M485 95 V215 M500 95 V215 M515 95 V215 M530 95 V215 M545 95 V215 M560 95 V215 M575 95 V215 M590 95 V215 M605 95 V215 M470 110 H620 M470 125 H620 M470 140 H620 M470 155 H620 M470 170 H620 M470 185 H620 M470 200 H620" fill="none" stroke="#fbfdf9" stroke-width="1.6" opacity=".55"/>
+        <path d="M470 215 V95 H620 V215" fill="none" stroke="#fbfdf9" stroke-width="8" stroke-linejoin="round"/>
+      </g>
+      <g transform="translate(508 215) scale(-1.75 1.75)"><g class="j-portero"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.1s">
+<path class="pierna" style="animation-delay:-0.34s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.1s" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" style="animation-delay:-0.1s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.34s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g></g></g>
+      <g transform="translate(0 215)"><g class="j-corre"><g transform="scale(1.75)"><g class="jug"><g class="jug-cuerpo">
+<path class="pierna" style="animation-delay:-0.24s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#1d1d1b" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.24s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g></g></g></g>
+      <g transform="translate(0 204)"><g class="j-balon"><g transform="scale(1.6)"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g></g>
+      <text class="j-gol" x="235" y="90" text-anchor="middle">¡GOL!</text>
+    </svg>
+  </div>
+
   <main class="wrap">
 
     <section class="bloque" aria-labelledby="t-marcador">
@@ -638,6 +841,45 @@
       <path d="M4 9 q14 -12 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0" fill="none" stroke="#1d1d1b" stroke-width="5" stroke-linecap="round"/>
     </svg>
   </aside>
+
+  <div class="carrera" aria-hidden="true">
+    <svg class="corredor c1" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo">
+<path class="pierna" style="animation-delay:-0.24s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#1d1d1b" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.24s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g><g transform="translate(20 -7)"><g class="rueda"><circle r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/><path d="M0 -3.2 L3 -1 L1.9 2.6 H-1.9 L-3 -1 Z" fill="#1d1d1b"/></g></g></g></svg>
+    <svg class="corredor c2" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.15s">
+<path class="pierna" style="animation-delay:-0.39s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.15s" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" style="animation-delay:-0.15s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.39s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g></g></svg>
+    <svg class="corredor c3" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.3s">
+<path class="pierna" style="animation-delay:-0.54s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.3s" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#1d1d1b" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" style="animation-delay:-0.3s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.54s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g></g></svg>
+    <svg class="corredor c4" viewBox="-14 -66 46 68" role="presentation"><g class="voltea"><g class="jug"><g class="jug-cuerpo" style="animation-delay:-0.05s">
+<path class="pierna" style="animation-delay:-0.29s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.05s" d="M1 -44 L-5 -35 L1 -28"/>
+<path d="M-5 -47 Q2 -51 7 -46 L5 -27 H-5 Z" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+<path d="M-6 -29 H6 L7 -21 H-7 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="1.5"/>
+<path class="pierna" style="animation-delay:-0.05s" d="M0 -26 L6 -13 L-2 -1"/>
+<path class="brazo" style="animation-delay:-0.29s" d="M1 -44 L-5 -35 L1 -28"/>
+<circle cx="3" cy="-55" r="7" fill="#fbfdf9" stroke="#1d1d1b" stroke-width="1.5"/>
+</g></g></g></svg>
+  </div>
 
   <footer class="cierre wrap">
     <p class="frase">¡Te espero en la cancha!</p>
