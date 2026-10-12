@@ -164,6 +164,7 @@
     overflow-wrap: anywhere;
   }
   .lista .dato { font-size: .9rem; color: var(--cal-suave); }
+  .estado { margin-top: .75rem; }
   .vacio { margin-top: 1.25rem; color: var(--cal-suave); }
 </style>
 </head>
@@ -212,6 +213,7 @@
         <button class="boton" id="boton-salir" type="button">Salir</button>
       </div>
     </div>
+    <p class="ayuda estado" id="estado">Se actualiza sola cada 10 segundos.</p>
     <p class="error" id="error-lista" role="alert" hidden></p>
     <p class="vacio" id="vacio" hidden>Todavía nadie ha confirmado.</p>
     <ol class="lista" id="lista"></ol>
@@ -287,13 +289,39 @@
       });
     }
 
+    var hora = new Intl.DateTimeFormat('es-MX', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+
     function cargarLista() {
       return rpc('admin_confirmados', { clave: clave }).then(function (filas) {
         el('error-lista').hidden = true;
         pintar(filas || []);
+        el('estado').textContent = 'Se actualiza sola cada 10 segundos. Última vez: ' + hora.format(new Date());
         mostrar('vista');
       });
     }
+
+    function salir() {
+      clave = null;
+      el('lista').textContent = '';
+      mostrar('form-entrar');
+    }
+
+    // Actualización automática mientras la lista está abierta y la pestaña a la vista.
+    var cargando = false;
+    function refrescar() {
+      if (!clave || cargando || document.hidden || el('vista').hidden) return;
+      cargando = true;
+      cargarLista().catch(function (e) {
+        if (e.codigo === '28P01') {
+          salir();
+          avisar('error-entrar', 'La contraseña cambió. Vuelve a entrar.');
+          return;
+        }
+        avisar('error-lista', 'Sin conexión. Se volverá a intentar en unos segundos.');
+      }).then(function () { cargando = false; });
+    }
+    setInterval(refrescar, 10000);
+    document.addEventListener('visibilitychange', refrescar);
 
     function mensajeDeError(e) {
       return e.codigo === '28P01' ? 'Contraseña incorrecta.' : 'No se pudo conectar. Inténtalo de nuevo.';
@@ -342,11 +370,7 @@
         .then(function () { b.disabled = false; });
     });
 
-    el('boton-salir').addEventListener('click', function () {
-      clave = null;
-      el('lista').textContent = '';
-      mostrar('form-entrar');
-    });
+    el('boton-salir').addEventListener('click', salir);
 
     rpc('admin_tiene_clave').then(function (tiene) {
       mostrar(tiene ? 'form-entrar' : 'form-crear');

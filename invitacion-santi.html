@@ -312,14 +312,55 @@
   }
 
   .mapa {
+    position: relative;
+    display: block;
     margin-top: 1.25rem;
     aspect-ratio: 4 / 3;
     max-height: 26rem;
     width: 100%;
+    overflow: hidden;
     background: var(--tinta);
     border: 3px solid var(--cal);
   }
-  .mapa iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .mapa iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }
+  .mapa .pin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 44px;
+    height: 58px;
+    transform: translate(-50%, -100%);
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .35));
+  }
+  .mapa .lugar {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 8px);
+    transform: translateX(-50%);
+    padding: .15em .7em;
+    background: var(--tinta);
+    color: var(--oro);
+    font-family: var(--f-titulo);
+    font-size: 1.2rem;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .mapa .toca {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: .45em .8em;
+    background: var(--cal);
+    color: var(--pasto);
+    font-family: var(--f-texto);
+    font-weight: 700;
+    font-size: .95rem;
+    text-align: center;
+    text-decoration: underline;
+    text-underline-offset: .14em;
+  }
+  .mapa:focus-visible { outline: 3px solid var(--oro); outline-offset: 3px; }
 
   /* ───── Confirmación ───── */
   .confirmar {
@@ -542,9 +583,15 @@
           </div>
         </dl>
       </div>
-      <div class="mapa">
-        <iframe title="Mapa de Google con la ubicación del Salón de Fiestas Mar" src="https://maps.google.com/maps?q=Salon%20de%20fiestas%20MAR%2C%20C.%2098%20Supermanzana%20227%2C%2077516%20Canc%C3%BAn%2C%20Q.R.&amp;ll=21.190304,-86.850288&amp;z=17&amp;hl=es&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-      </div>
+      <a class="mapa" href="https://maps.app.goo.gl/sZq9G5uDEGVFnnwk9?g_st=ic" target="_blank" rel="noopener" aria-label="Abrir la ubicación del Salón de Fiestas Mar en Google Maps">
+        <iframe title="Mapa de Google de la zona del salón" src="https://maps.google.com/maps?ll=21.190304,-86.850288&amp;z=17&amp;hl=es&amp;output=embed" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        <svg class="pin" viewBox="0 0 44 58" aria-hidden="true">
+          <path d="M22 2 C10.4 2 2 10.6 2 21.6 C2 36 22 56 22 56 C22 56 42 36 42 21.6 C42 10.6 33.6 2 22 2 Z" fill="#f0b43c" stroke="#1d1d1b" stroke-width="3"/>
+          <circle cx="22" cy="21" r="8" fill="#1d1d1b"/>
+        </svg>
+        <span class="lugar">Salón de Fiestas Mar</span>
+        <span class="toca">Toca el mapa para abrirlo en Google Maps</span>
+      </a>
       <div class="acciones">
         <a class="boton" href="https://maps.app.goo.gl/sZq9G5uDEGVFnnwk9?g_st=ic" target="_blank" rel="noopener">Abrir en Google Maps</a>
         <a class="boton" href="https://maps.app.goo.gl/xCX2FaFgsVg5RuxK7?g_st=ic" target="_blank" rel="noopener">Cómo llegar</a>
