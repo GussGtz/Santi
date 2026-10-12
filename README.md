@@ -7,3 +7,7 @@ Invitación web al cumple 8 de Santi: viernes 16 de octubre, 3:00 PM, Salón de 
 - `supabase.sql`: prepara la tabla `Santi` en Supabase.
 
 Para activar las confirmaciones, ejecuta `supabase.sql` en el SQL Editor de Supabase.
+
+## Lista de confirmados
+
+`admin.html` muestra quién ha confirmado. Pide una contraseña, que se crea la primera vez que se abre la página. `supabase-admin.sql` contiene las funciones que la protegen.
