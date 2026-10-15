@@ -1,5 +1,5 @@
 // Service worker de la invitación: la deja instalable y visible sin conexión.
-var VERSION = 'santi-v4';
+var VERSION = 'santi-v5';
 var BASE = ['/', '/manifest.webmanifest', '/icons/icono-192.png', '/icons/icono-512.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', function (e) {
